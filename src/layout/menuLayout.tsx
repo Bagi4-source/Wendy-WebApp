@@ -1,8 +1,7 @@
-import { PropsWithChildren, ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Person, Gear, ChartMixed } from '@gravity-ui/icons';
-import { Card, Tab, Tabs } from '@nextui-org/react';
+import { Tab, Tabs } from '@nextui-org/react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { k } from 'vite/dist/node/types.d-aGj9QkWt';
 
 
 interface MenuItem {
@@ -10,7 +9,7 @@ interface MenuItem {
   key: string;
 }
 
-export const MenuLayout = ({ children }: PropsWithChildren) => {
+export const MenuLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 

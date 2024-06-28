@@ -1,4 +1,4 @@
-import { Button, Input, Slider, Switch, Textarea } from '@nextui-org/react';
+import { Button, Slider } from '@nextui-org/react';
 import { useState } from 'react';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
@@ -16,17 +16,20 @@ export const SettingsPage = () => {
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Settings</p>
     <Slider
-      size={"lg"}
+      size={'lg'}
       label="Select the opening hours"
       step={1}
       maxValue={MAX_TIME}
       minValue={0}
       value={value}
       getValue={(v) => {
-        const [a, b] = v;
+        const [a, b] = v as Array<number>;
         return `${numberToTime(a)} ${numberToTime(b)}`;
       }}
-      onChange={setValue}
+      onChange={(value) => {
+        if (value instanceof Array)
+          setValue(value);
+      }}
       className="max-w-md"
     />
     <Button
