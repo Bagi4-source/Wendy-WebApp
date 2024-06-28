@@ -40,7 +40,7 @@ export const MenuLayout = () => {
         aria-label="menu"
         fullWidth={true}
         onSelectionChange={(key) => {
-          navigate(`/${key}`);
+          navigate(`${key}`);
         }}
         selectedKey={selectedKey}
         size={'lg'}

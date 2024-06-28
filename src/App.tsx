@@ -6,17 +6,18 @@ import { MenuLayout } from './layout/menuLayout.tsx';
 const routes: NonIndexRouteObject[] = [
   {
     element: <MenuLayout />,
+    path: "/Wendy-WebApp",
     children: [{
-      path: '/',
+      index: true,
       element: <Navigate to={'profile'} replace></Navigate>,
     }, {
-      path: '/profile',
+      path: 'profile',
       element: <UserInfoPage />,
     }, {
-      path: '/stats',
+      path: 'stats',
       element: <StatsPage />,
     }, {
-      path: '/settings',
+      path: 'settings',
       element: <SettingsPage />,
     }],
   },
