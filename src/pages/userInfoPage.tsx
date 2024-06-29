@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react';
+import { Button, DatePicker, Input, Select, SelectItem, Switch, Textarea, Selection } from '@nextui-org/react';
 import { useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { userAtom } from '../store/user.atom.ts';
@@ -58,9 +58,11 @@ export const UserInfoPage = () => {
       fullWidth={true}
       placeholder="Enter your country"
       selectedKeys={[formData.country]}
-      onSelectionChange={(value) => {
-        if (value satisfies { currentKey: string })
-          setFormData(prev => ({ ...prev, country: value.currentKey }));
+      onSelectionChange={(value: Selection) => {
+        if (value instanceof Set) {
+          const currentKey = Array.from(value);
+          setFormData(prev => ({ ...prev, country: currentKey[0].toString() }));
+        }
       }}
     >
       {options.map((country) => (
