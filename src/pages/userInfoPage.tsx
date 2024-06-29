@@ -31,12 +31,10 @@ export const UserInfoPage = () => {
       fullWidth={true}
       value={formData.preferredName}
       onValueChange={(value) => setFormData(prev => ({ ...prev, preferredName: value }))}
-      size={'lg'}
       type="text"
       label="Preferred name"
       placeholder="Enter your preferred name" />
     <DatePicker
-      size={'lg'}
       fullWidth={true}
       className={'text-start'}
       onChange={(value) => setFormData(prev => ({ ...prev, bDay: value }))}
@@ -45,19 +43,16 @@ export const UserInfoPage = () => {
       fullWidth={true}
       value={formData.bio}
       onValueChange={(value) => setFormData(prev => ({ ...prev, bio: value }))}
-      size={'lg'}
       label="Bio"
       placeholder="Enter your biography"
     />
     <Switch
       isSelected={formData.isAdult}
       onValueChange={(isSelected) => setFormData(prev => ({ ...prev, isAdult: isSelected }))}
-      size={'lg'}
     >Is adult</Switch>
     <Select
       label="Country"
       fullWidth={true}
-      size={'lg'}
       placeholder="Enter your country"
       selectedKeys={[formData.country]}
       onSelectionChange={(value) => {
@@ -74,7 +69,6 @@ export const UserInfoPage = () => {
     <Button
       fullWidth={true}
       color={'primary'}
-      size={'lg'}
       onClick={() => {
         console.log(formData);
       }}>Submit</Button>

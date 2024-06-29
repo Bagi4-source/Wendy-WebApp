@@ -20,8 +20,8 @@ export const SettingsPage = () => {
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Settings</p>
     <Slider
-      size={'lg'}
       label="Select the opening hours"
+      size={"lg"}
       step={1}
       maxValue={MAX_TIME}
       minValue={0}
@@ -38,7 +38,6 @@ export const SettingsPage = () => {
     {JSON.stringify(tg.initData)}
     <Button
       color={'primary'}
-      size={'lg'}
       onClick={() => {
         console.log(value);
       }}>Submit</Button>
