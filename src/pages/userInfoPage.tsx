@@ -1,32 +1,56 @@
 import { Button, DatePicker, Input, Select, SelectItem, Switch, Textarea, Selection } from '@nextui-org/react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { userAtom } from '../store/user.atom.ts';
-import { useAtom } from '@reatom/npm-react';
+import { useAction, useAtom } from '@reatom/npm-react';
+import { parseDate } from '@internationalized/date';
+import { getQuestionnaire, updateQuestionnaire } from '../store/questionnaire.atom.ts';
+import { WebAppDataDto } from '../dto/WebAppData.dto.ts';
 
 interface UserInfoForm {
+  userId: number;
   isAdult: boolean;
   bio: string;
   preferredName: string;
-  country: string;
-  timezoneOffset: number;
-  bDay?: {
-    day: number,
-    month: number,
-    year: number,
-  };
+  residenceCountry: string;
+  bday: Date;
 }
 
 export const UserInfoPage = () => {
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
   const [userData] = useAtom(userAtom);
+  const getQuestionnaireAction = useAction(getQuestionnaire);
+  const updateQuestionnaireAction = useAction(updateQuestionnaire);
+  const [questionnaire] = useAtom(getQuestionnaire.dataAtom);
+
+  useEffect(() => {
+    if (userData?.user?.id)
+      getQuestionnaireAction(userData.user.id);
+  }, [getQuestionnaireAction, userData?.user?.id]);
+
+  const firstQuestionnaireCreate = useMemo(() => questionnaire === undefined, [questionnaire])
+
   const [formData, setFormData] = useState<UserInfoForm>({
+    userId: userData?.user?.id ?? 0,
     isAdult: false,
     bio: '',
     preferredName: userData?.user?.first_name ?? '',
-    country: userData?.user?.language_code?.toUpperCase() ?? 'RU',
-    timezoneOffset: new Date().getTimezoneOffset(),
+    residenceCountry: userData?.user?.language_code?.toUpperCase() ?? 'RU',
+    bday: new Date(),
   });
+
+  useEffect(() => {
+    if (!questionnaire) return;
+    setFormData(questionnaire);
+  }, [questionnaire, userData]);
+
   const options = useMemo(() => countryList().getData(), []);
+  const bday = useMemo(() => {
+    const parts = formData.bday.toLocaleDateString().split(".").reverse();
+    return parts.join("-");
+  }, [formData.bday])
 
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Tell me something about you</p>
@@ -40,7 +64,11 @@ export const UserInfoPage = () => {
     <DatePicker
       fullWidth={true}
       className={'text-start'}
-      onChange={(value) => setFormData(prev => ({ ...prev, bDay: value }))}
+      value={parseDate(bday)}
+      onChange={(value) => {
+        const bday = new Date(value.year, value.month - 1, value.day);
+        setFormData(prev => ({ ...prev, bday }));
+      }}
       label="Birth date" />
     <Textarea
       fullWidth={true}
@@ -57,11 +85,12 @@ export const UserInfoPage = () => {
       label="Country"
       fullWidth={true}
       placeholder="Enter your country"
-      selectedKeys={[formData.country]}
+      selectedKeys={[formData.residenceCountry]}
       onSelectionChange={(value: Selection) => {
         if (value instanceof Set) {
           const currentKey = Array.from(value);
-          setFormData(prev => ({ ...prev, country: currentKey[0].toString() }));
+          if (currentKey.length)
+            setFormData(prev => ({ ...prev, residenceCountry: currentKey[0].toString() }));
         }
       }}
     >
@@ -75,7 +104,15 @@ export const UserInfoPage = () => {
       fullWidth={true}
       color={'primary'}
       onClick={() => {
-        console.log(formData);
+        updateQuestionnaireAction(formData);
+        if (firstQuestionnaireCreate) {
+          const data: WebAppDataDto = {
+            event: "FIRST_QUESTIONNAIRE_CREATE",
+            content: {}
+          }
+          console.log(data);
+          tg.sendData(JSON.stringify(data));
+        }
       }}>Submit</Button>
   </section>;
 };

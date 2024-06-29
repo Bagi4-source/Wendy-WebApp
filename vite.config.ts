@@ -9,4 +9,13 @@ export default defineConfig({
   },
   base: "/Wendy-WebApp/",
   plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        changeOrigin: true,
+        target: "http://localhost:3000/"
+      }
+    }
+  }
 })
