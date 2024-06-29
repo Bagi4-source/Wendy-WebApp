@@ -1,5 +1,6 @@
 import { Button, Slider } from '@nextui-org/react';
 import { useState } from 'react';
+import { initInitData, postEvent } from '@tma.js/sdk';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
 
@@ -11,9 +12,14 @@ const numberToTime = (value: number) => {
 
 const MAX_TIME = 1439;
 
+
+interface MessageJSON {
+  eventType: string;
+  eventData: any;
+}
+
 export const SettingsPage = () => {
-  const tg = window.Telegram.WebApp;
-  tg.expand();
+  const [initData] = initInitData();
 
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
@@ -35,12 +41,12 @@ export const SettingsPage = () => {
       }}
       className="max-w-md"
     />
+    {JSON.stringify(initData)}
     <Button
       color={'primary'}
       size={'lg'}
       onClick={() => {
-        console.log(value);
-        tg.sendData("Hello");
+        postEvent('web_app_data_send', { data: 'afaf' }, undefined);
       }}>Submit</Button>
   </section>;
 };

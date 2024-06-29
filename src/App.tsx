@@ -2,11 +2,12 @@ import './App.css';
 import { createBrowserRouter, Navigate, NonIndexRouteObject, RouterProvider } from 'react-router-dom';
 import { SettingsPage, StatsPage, UserInfoPage } from './pages';
 import { MenuLayout } from './layout/menuLayout.tsx';
+import { SDKProvider } from '@tma.js/sdk-react';
 
 const routes: NonIndexRouteObject[] = [
   {
     element: <MenuLayout />,
-    path: "/Wendy-WebApp",
+    path: '/Wendy-WebApp',
     children: [{
       index: true,
       element: <Navigate to={'profile'} replace></Navigate>,
@@ -26,7 +27,9 @@ const routes: NonIndexRouteObject[] = [
 export const AppRouter = createBrowserRouter(routes);
 
 function App() {
-  return <RouterProvider router={AppRouter} />;
+  return <SDKProvider acceptCustomStyles debug>
+    <RouterProvider router={AppRouter} />
+  </SDKProvider>;
 }
 
 export default App;
