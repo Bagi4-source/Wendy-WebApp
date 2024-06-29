@@ -59,7 +59,8 @@ export const UserInfoPage = () => {
       placeholder="Enter your country"
       selectedKeys={[formData.country]}
       onSelectionChange={(value) => {
-        setFormData(prev => ({ ...prev, country: value.currentKey }));
+        if (value satisfies { currentKey: string })
+          setFormData(prev => ({ ...prev, country: value.currentKey }));
       }}
     >
       {options.map((country) => (
