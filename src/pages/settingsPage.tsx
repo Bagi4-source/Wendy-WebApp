@@ -1,6 +1,6 @@
 import { Button, Slider } from '@nextui-org/react';
 import { useState } from 'react';
-import { initInitData, postEvent } from '@tma.js/sdk';
+import { useInitData, postEvent } from '@tma.js/sdk-react';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
 
@@ -13,13 +13,9 @@ const numberToTime = (value: number) => {
 const MAX_TIME = 1439;
 
 
-interface MessageJSON {
-  eventType: string;
-  eventData: any;
-}
-
 export const SettingsPage = () => {
-  const [initData] = initInitData();
+  const initData = useInitData(true);
+  console.log(initData);
 
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
@@ -41,7 +37,6 @@ export const SettingsPage = () => {
       }}
       className="max-w-md"
     />
-    {JSON.stringify(initData)}
     <Button
       color={'primary'}
       size={'lg'}
