@@ -22,7 +22,7 @@ export const UserInfoPage = () => {
   const [formData, setFormData] = useState<UserInfoForm>({
     isAdult: false,
     bio: '',
-    preferredName: userData?.user?.username ?? '',
+    preferredName: userData?.user?.first_name ?? '',
     country: userData?.user?.language_code?.toUpperCase() ?? 'RU',
     timezoneOffset: new Date().getTimezoneOffset(),
   });
@@ -59,8 +59,7 @@ export const UserInfoPage = () => {
       placeholder="Enter your country"
       selectedKeys={[formData.country]}
       onSelectionChange={(value) => {
-        if (value instanceof Array)
-          setFormData(prev => ({ ...prev, country: value[0].currentKey.toString() }));
+        setFormData(prev => ({ ...prev, country: value.currentKey }));
       }}
     >
       {options.map((country) => (
