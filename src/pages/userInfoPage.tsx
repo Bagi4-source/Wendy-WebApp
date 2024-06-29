@@ -1,6 +1,8 @@
 import { Button, DatePicker, Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react';
 import { useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
+import { userAtom } from '../store/user.atom.ts';
+import { useAtom } from '@reatom/npm-react';
 
 interface UserInfoForm {
   isAdult: boolean;
@@ -16,11 +18,12 @@ interface UserInfoForm {
 }
 
 export const UserInfoPage = () => {
+  const [userData] = useAtom(userAtom);
   const [formData, setFormData] = useState<UserInfoForm>({
     isAdult: false,
     bio: '',
-    preferredName: '',
-    country: 'RU',
+    preferredName: userData?.user?.username ?? '',
+    country: userData?.user?.language_code ?? 'RU',
     timezoneOffset: new Date().getTimezoneOffset(),
   });
   const options = useMemo(() => countryList().getData(), []);

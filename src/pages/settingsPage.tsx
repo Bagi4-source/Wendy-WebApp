@@ -13,15 +13,12 @@ const MAX_TIME = 1439;
 
 
 export const SettingsPage = () => {
-  const tg = window.Telegram.WebApp;
-  tg.expand();
-
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Settings</p>
     <Slider
       label="Select the opening hours"
-      size={"lg"}
+      size={'lg'}
       step={1}
       maxValue={MAX_TIME}
       minValue={0}
@@ -35,7 +32,6 @@ export const SettingsPage = () => {
           setValue(value);
       }}
     />
-    {JSON.stringify(tg.initDataUnsafe)}
     <Button
       color={'primary'}
       onClick={() => {

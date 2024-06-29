@@ -12,6 +12,9 @@
   "dependencies": {
     "@gravity-ui/icons": "^2.10.0",
     "@nextui-org/react": "^2.4.2",
+    "@reatom/core": "^3.8.3",
+    "@reatom/framework": "^3.4.47",
+    "@reatom/npm-react": "^3.8.10",
     "framer-motion": "^11.2.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

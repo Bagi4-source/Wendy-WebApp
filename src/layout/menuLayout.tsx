@@ -1,7 +1,9 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { Person, Gear, ChartMixed } from '@gravity-ui/icons';
 import { Tab, Tabs } from '@nextui-org/react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useAtom } from '@reatom/npm-react';
+import { userAtom } from '../store/user.atom.ts';
 
 
 interface MenuItem {
@@ -12,6 +14,17 @@ interface MenuItem {
 export const MenuLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [, setUser] = useAtom(userAtom);
+
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
+
+  useEffect(() => {
+    if (tg.initDataUnsafe)
+      setUser(tg.initDataUnsafe);
+  }, [tg.initDataUnsafe]);
+
 
   const menuItems: MenuItem[] = useMemo(() => [{
     content: <Person className={'w-auto h-5 opacity-90'} />,
