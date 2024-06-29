@@ -1,6 +1,6 @@
 import { Button, Slider } from '@nextui-org/react';
 import { useState } from 'react';
-import { useInitData, postEvent } from '@tma.js/sdk-react';
+import { postEvent } from '@tma.js/sdk-react';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
 
@@ -13,9 +13,42 @@ const numberToTime = (value: number) => {
 const MAX_TIME = 1439;
 
 
+interface MessageJSON {
+  eventType: string;
+  eventData: any;
+}
+
 export const SettingsPage = () => {
-  const initData = useInitData(true);
-  console.log(initData);
+  const initDataRaw = useLaunchParams().initDataRaw;
+  const initData = useInitData();
+
+  const initDataRows = useMemo<DisplayDataRow[] | undefined>(() => {
+    if (!initData || !initDataRaw) {
+      return;
+    }
+    const {
+      hash,
+      queryId,
+      chatType,
+      chatInstance,
+      authDate,
+      startParam,
+      canSendAfter,
+      canSendAfterDate,
+    } = initData;
+    return [
+      { title: 'raw', value: initDataRaw },
+      { title: 'auth_date', value: authDate.toLocaleString() },
+      { title: 'auth_date (raw)', value: authDate.getTime() / 1000 },
+      { title: 'hash', value: hash },
+      { title: 'can_send_after', value: canSendAfterDate?.toISOString() },
+      { title: 'can_send_after (raw)', value: canSendAfter },
+      { title: 'query_id', value: queryId },
+      { title: 'start_param', value: startParam },
+      { title: 'chat_type', value: chatType },
+      { title: 'chat_instance', value: chatInstance },
+    ];
+  }, [initData, initDataRaw]);
 
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
@@ -37,12 +70,12 @@ export const SettingsPage = () => {
       }}
       className="max-w-md"
     />
-    {JSON.stringify(initData)}
+    {JSON.stringify(initDataRows)}
     <Button
       color={'primary'}
       size={'lg'}
       onClick={() => {
-        postEvent('web_app_data_send', { data: 'afaf' }, undefined);
+        postEvent('web_app_setup_back_button', { data: 13 });
       }}>Submit</Button>
   </section>;
 };
