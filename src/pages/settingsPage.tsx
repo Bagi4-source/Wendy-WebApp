@@ -15,7 +15,7 @@ const MAX_TIME = 1439;
 
 export const SettingsPage = () => {
   const initDataRaw = useLaunchParams().initDataRaw;
-  const initData = useInitData();
+  const initData = useInitData(true);
 
   const initDataRows = useMemo(() => {
     if (!initData || !initDataRaw) {
