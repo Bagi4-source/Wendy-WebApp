@@ -1,6 +1,5 @@
 import { Button, Slider } from '@nextui-org/react';
-import { useMemo, useState } from 'react';
-import { postEvent, useInitData, useLaunchParams } from '@tma.js/sdk-react';
+import { useState } from 'react';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
 
@@ -14,36 +13,8 @@ const MAX_TIME = 1439;
 
 
 export const SettingsPage = () => {
-  const initDataRaw = useLaunchParams().initDataRaw;
-  const initData = useInitData(true);
-
-  const initDataRows = useMemo(() => {
-    if (!initData || !initDataRaw) {
-      return;
-    }
-    const {
-      hash,
-      queryId,
-      chatType,
-      chatInstance,
-      authDate,
-      startParam,
-      canSendAfter,
-      canSendAfterDate,
-    } = initData;
-    return [
-      { title: 'raw', value: initDataRaw },
-      { title: 'auth_date', value: authDate.toLocaleString() },
-      { title: 'auth_date (raw)', value: authDate.getTime() / 1000 },
-      { title: 'hash', value: hash },
-      { title: 'can_send_after', value: canSendAfterDate?.toISOString() },
-      { title: 'can_send_after (raw)', value: canSendAfter },
-      { title: 'query_id', value: queryId },
-      { title: 'start_param', value: startParam },
-      { title: 'chat_type', value: chatType },
-      { title: 'chat_instance', value: chatInstance },
-    ];
-  }, [initData, initDataRaw]);
+  const tg = window.Telegram.WebApp;
+  tg.expand();
 
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
@@ -65,12 +36,12 @@ export const SettingsPage = () => {
       }}
       className="max-w-md"
     />
-    {JSON.stringify(initDataRows)}
+    {JSON.stringify(tg.initData)}
     <Button
       color={'primary'}
       size={'lg'}
       onClick={() => {
-        postEvent('web_app_setup_back_button', { is_visible: false });
+        console.log(value);
       }}>Submit</Button>
   </section>;
 };
