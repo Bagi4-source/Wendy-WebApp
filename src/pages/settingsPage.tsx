@@ -35,7 +35,7 @@ export const SettingsPage = () => {
           setValue(value);
       }}
     />
-    {JSON.stringify(tg.initData)}
+    {JSON.stringify(tg.initDataUnsafe)}
     <Button
       color={'primary'}
       onClick={() => {
