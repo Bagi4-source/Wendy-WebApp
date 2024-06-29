@@ -34,7 +34,6 @@ export const SettingsPage = () => {
         if (value instanceof Array)
           setValue(value);
       }}
-      className="max-w-md"
     />
     {JSON.stringify(tg.initData)}
     <Button
