@@ -23,7 +23,7 @@ export const UserInfoPage = () => {
     isAdult: false,
     bio: '',
     preferredName: userData?.user?.username ?? '',
-    country: userData?.user?.language_code ?? 'RU',
+    country: userData?.user?.language_code?.toUpperCase() ?? 'RU',
     timezoneOffset: new Date().getTimezoneOffset(),
   });
   const options = useMemo(() => countryList().getData(), []);

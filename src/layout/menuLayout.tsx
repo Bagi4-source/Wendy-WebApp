@@ -45,8 +45,10 @@ export const MenuLayout = () => {
   }, [location.pathname]);
 
   return <>
-    <Outlet />
-    <div className={'fixed bottom-4 left-0 w-full px-3'}>
+    <div className={"mb-20"}>
+      <Outlet />
+    </div>
+    <div className={'fixed bottom-4 left-0 w-full px-3 z-50'}>
       <Tabs
         className={'w-full'}
         color={'primary'}
