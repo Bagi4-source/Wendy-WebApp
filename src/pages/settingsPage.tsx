@@ -37,6 +37,7 @@ export const SettingsPage = () => {
       }}
       className="max-w-md"
     />
+    {JSON.stringify(initData)}
     <Button
       color={'primary'}
       size={'lg'}
