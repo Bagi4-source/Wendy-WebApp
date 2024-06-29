@@ -12,6 +12,9 @@ const numberToTime = (value: number) => {
 const MAX_TIME = 1439;
 
 export const SettingsPage = () => {
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Settings</p>
@@ -37,6 +40,7 @@ export const SettingsPage = () => {
       size={'lg'}
       onClick={() => {
         console.log(value);
+        tg.sendData("Hello");
       }}>Submit</Button>
   </section>;
 };
