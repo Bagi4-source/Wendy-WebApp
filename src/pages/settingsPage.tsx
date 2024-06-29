@@ -70,7 +70,7 @@ export const SettingsPage = () => {
       color={'primary'}
       size={'lg'}
       onClick={() => {
-        postEvent('web_app_setup_back_button', { data: 13 });
+        postEvent('web_app_setup_back_button', { is_visible: false });
       }}>Submit</Button>
   </section>;
 };
