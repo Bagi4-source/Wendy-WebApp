@@ -26,8 +26,7 @@ export const UserInfoPage = () => {
   const [questionnaire] = useAtom(getQuestionnaire.dataAtom);
 
   useEffect(() => {
-    if (userData?.user?.id)
-      getQuestionnaireAction(userData.user.id);
+    getQuestionnaireAction(554116381);
   }, [getQuestionnaireAction, userData?.user?.id]);
 
   const firstQuestionnaireCreate = useMemo(() => questionnaire === undefined, [questionnaire])
