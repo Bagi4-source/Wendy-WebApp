@@ -1,6 +1,6 @@
 import { Button, Slider } from '@nextui-org/react';
-import { useState } from 'react';
-import { postEvent } from '@tma.js/sdk-react';
+import { useMemo, useState } from 'react';
+import { postEvent, useInitData, useLaunchParams } from '@tma.js/sdk-react';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
 
@@ -13,16 +13,11 @@ const numberToTime = (value: number) => {
 const MAX_TIME = 1439;
 
 
-interface MessageJSON {
-  eventType: string;
-  eventData: any;
-}
-
 export const SettingsPage = () => {
   const initDataRaw = useLaunchParams().initDataRaw;
   const initData = useInitData();
 
-  const initDataRows = useMemo<DisplayDataRow[] | undefined>(() => {
+  const initDataRows = useMemo(() => {
     if (!initData || !initDataRaw) {
       return;
     }
