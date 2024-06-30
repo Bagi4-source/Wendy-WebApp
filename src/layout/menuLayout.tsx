@@ -23,7 +23,7 @@ export const MenuLayout = () => {
   useEffect(() => {
     if (tg.initDataUnsafe)
       setUser(tg.initDataUnsafe);
-  }, [tg.initDataUnsafe]);
+  }, [setUser, tg.initDataUnsafe]);
 
 
   const menuItems: MenuItem[] = useMemo(() => [{
@@ -42,7 +42,7 @@ export const MenuLayout = () => {
       if (location.pathname.endsWith(item.key))
         return item.key;
     }
-  }, [location.pathname]);
+  }, [menuItems, location.pathname]);
 
   return <>
     <div className={"mb-20"}>

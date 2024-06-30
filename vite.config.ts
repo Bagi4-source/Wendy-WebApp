@@ -9,16 +9,6 @@ export default defineConfig({
   },
   preview: {
     port: 80,
-    host: '0.0.0.0'
   },
   plugins: [react()],
-  server: {
-    proxy: {
-      '/api': {
-        rewrite: (path) => path.replace(/^\/api/, ''),
-        changeOrigin: true,
-        target: 'http://localhost:3000/',
-      },
-    },
-  },
 });

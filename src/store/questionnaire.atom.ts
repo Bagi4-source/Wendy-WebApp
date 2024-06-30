@@ -11,7 +11,7 @@ interface IQuestionnaire {
 }
 
 export const getQuestionnaire = reatomAsync((ctx, telegramId: number) => {
-    return axios.get<IQuestionnaire>(`/api/user/questionnaire?userId=${telegramId}`)
+    return axios.get<IQuestionnaire>(`http://95.163.223.114:3000/user/questionnaire?userId=${telegramId}`)
       .then(({ data }) => ({ ...data, bday: new Date(data.bday) }))
       .catch(() => undefined);
   },
@@ -19,6 +19,6 @@ export const getQuestionnaire = reatomAsync((ctx, telegramId: number) => {
 
 export const updateQuestionnaire = reatomAsync(async (ctx, data: IQuestionnaire) => {
     console.log(data);
-  await axios.post('/api/user/questionnaire', data)
+  await axios.post('http://95.163.223.114:3000/user/questionnaire', data)
   },
   'updateQuestionnaire');
