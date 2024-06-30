@@ -1,4 +1,4 @@
-import { Button, Slider } from '@nextui-org/react';
+import { Button, Slider, Switch, Textarea } from '@nextui-org/react';
 import { useState } from 'react';
 
 const formatNumber = (value: number) => value.toLocaleString('ru', { minimumIntegerDigits: 2 });
@@ -16,9 +16,14 @@ export const SettingsPage = () => {
   const [value, setValue] = useState([0, MAX_TIME]);
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Settings</p>
+    <Textarea
+      minRows={6}
+      fullWidth={true}
+      label="Custom prompt"
+      placeholder="Enter your prompt"
+    />
     <Slider
       label="Select the opening hours"
-      size={'lg'}
       step={1}
       maxValue={MAX_TIME}
       minValue={0}
@@ -32,6 +37,7 @@ export const SettingsPage = () => {
           setValue(value);
       }}
     />
+    <Switch>Enable notifications</Switch>
     <Button
       color={'primary'}
       onClick={() => {

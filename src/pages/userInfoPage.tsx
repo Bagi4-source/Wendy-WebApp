@@ -24,9 +24,11 @@ export const UserInfoPage = () => {
   const getQuestionnaireAction = useAction(getQuestionnaire);
   const updateQuestionnaireAction = useAction(updateQuestionnaire);
   const [questionnaire] = useAtom(getQuestionnaire.dataAtom);
+  const [dateInvalid, setDateInvalid] = useState(false);
 
   useEffect(() => {
-    getQuestionnaireAction(554116381);
+    if (userData?.user?.id)
+      getQuestionnaireAction(userData.user.id);
   }, [getQuestionnaireAction, userData?.user?.id]);
 
   const firstQuestionnaireCreate = useMemo(() => questionnaire === undefined, [questionnaire])
@@ -48,12 +50,16 @@ export const UserInfoPage = () => {
   const options = useMemo(() => countryList().getData(), []);
   const bday = useMemo(() => {
     const parts = formData.bday.toLocaleDateString().split(".").reverse();
-    return parts.join("-");
-  }, [formData.bday])
+    return parseDate(parts.join("-"));
+  }, [formData.bday]);
 
   return <section className={'flex flex-col gap-4 justify-start'}>
     <p className={'text-xl'}>Tell me something about you</p>
     <Input
+      isRequired={true}
+      isInvalid={formData.preferredName.trim() === ''}
+      errorMessage={"Preferred name is empty"}
+      className={"text-start"}
       fullWidth={true}
       value={formData.preferredName}
       onValueChange={(value) => setFormData(prev => ({ ...prev, preferredName: value }))}
@@ -61,12 +67,23 @@ export const UserInfoPage = () => {
       label="Preferred name"
       placeholder="Enter your preferred name" />
     <DatePicker
+      isRequired={true}
+      isInvalid={dateInvalid}
+      errorMessage={"Invalid date format"}
       fullWidth={true}
       className={'text-start'}
-      value={parseDate(bday)}
+      defaultValue={bday}
       onChange={(value) => {
-        const bday = new Date(value.year, value.month - 1, value.day);
-        setFormData(prev => ({ ...prev, bday }));
+        try {
+          setDateInvalid(false);
+          const bday = new Date(value.year, value.month - 1, value.day);
+          const parts = bday.toLocaleDateString().split(".").reverse();
+          parseDate(parts.join("-"));
+          setFormData(prev => ({ ...prev, bday }));
+        } catch {
+          setDateInvalid(true);
+          console.error("Invalid date format!");
+        }
       }}
       label="Birth date" />
     <Textarea
@@ -81,6 +98,8 @@ export const UserInfoPage = () => {
       onValueChange={(isSelected) => setFormData(prev => ({ ...prev, isAdult: isSelected }))}
     >Is adult</Switch>
     <Select
+      isRequired={true}
+      unselectable={"off"}
       label="Country"
       fullWidth={true}
       placeholder="Enter your country"
