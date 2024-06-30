@@ -3,12 +3,10 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/Wendy-WebApp/",
   build: {
     cssMinify: true,
     minify: 'esbuild',
-  },
-  preview: {
-    port: 80,
   },
   plugins: [react()],
 });
